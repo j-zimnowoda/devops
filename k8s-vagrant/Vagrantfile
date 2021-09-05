@@ -1,0 +1,44 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+BOX = "bento/ubuntu-18.04"
+MASTER_INIT = "master.sh"
+WORKER_INIT = "worker.sh"
+
+Vagrant.configure("2") do |config|
+  config.vm.base_mac = nil
+  config.vm.box = BOX
+  config.vm.provider "virtualbox"
+# Provider-specific configuration -- VirtualBox
+  config.vm.provider "virtualbox" do |vb|
+    vb.customize ["modifyvm", :id, "--groups", "/" + "CKA"]
+  end
+
+  # The kubernetes master
+  config.vm.define "master" do |master|
+    master.vm.provider "virtualbox" do |vb|
+      disk = 'master.img'
+      vb.memory = 4 * 1024
+      vb.cpus = 4
+      vb.name = "master"
+    end
+
+    master.vm.hostname = "master"
+    master.vm.network "private_network", ip: "192.168.56.101"
+    master.vm.network "forwarded_port", guest: 8001, host: 9001
+    master.vm.provision :shell, path: MASTER_INIT
+  end
+
+  # The kubernetes worker node
+  config.vm.define "worker" do |worker|
+    worker.vm.provider "virtualbox" do |vb|
+      disk = 'worker.img'
+      vb.memory = 2 * 1024
+      vb.cpus = 2
+      vb.name = "worker"
+    end
+
+    worker.vm.hostname = "worker"
+    worker.vm.network "private_network", ip: "192.168.56.104"
+    worker.vm.provision :shell, path: WORKER_INIT
+  end
+end
