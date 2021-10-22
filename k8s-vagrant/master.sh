@@ -34,7 +34,6 @@ sudo apt-get update && sudo apt-get upgrade -y
 echo
 echo "Install Docker"
 sleep 3
-
 sudo apt-get install -y docker.io
 echo
 echo "Install kubeadm, kubelet, and kubectl"
@@ -46,7 +45,12 @@ sudo sh -c "echo 'deb http://apt.kubernetes.io/ kubernetes-xenial main' >> /etc/
 
 sudo sh -c "curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -"
 
+# Fix for GPG error: https://packages.cloud.google.com/apt kubernetes-xenial 
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys FEEA9169307EA071
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 8B57C5C2836F4BEB
+
 sudo apt-get update
+
 
 sudo apt-get install -y kubeadm=1.20.1-00 kubelet=1.20.1-00 kubectl=1.20.1-00
 
@@ -100,6 +104,7 @@ chown $user: /home/$user/.ssh
 mkdir -p /home/$user/.kube
 sudo cp -i /etc/kubernetes/admin.conf /home/$user/.kube/config
 sudo chown -R $user: /home/$user/.kube/config
+
 sleep 2
 
 echo

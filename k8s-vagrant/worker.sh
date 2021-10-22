@@ -45,6 +45,11 @@ echo 'KUBELET_EXTRA_ARGS="--node-ip=192.168.56.104"' > /etc/default/kubelet
 
 echo
 echo "  Install kubeadm, kubelet, and kubectl"
+# Fix for GPG error: https://packages.cloud.google.com/apt kubernetes-xenial 
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys FEEA9169307EA071
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 8B57C5C2836F4BEB
+sleep 2
+
 sleep 2
 sudo sh -c "echo 'deb http://apt.kubernetes.io/ kubernetes-xenial main' >> /etc/apt/sources.list.d/kubernetes.list"
 
