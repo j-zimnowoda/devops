@@ -2,13 +2,18 @@
 
 set -euo pipefail
 
-function connect() {
-  ssh student@192.168.56.101
+function ssh_master() {
+  ssh vagrant@192.168.56.101 -i .vagrant/machines/master/virtualbox/private_key
+}
+
+function ssh_worker() {
+  ssh vagrant@192.168.56.104 -i .vagrant/machines/worker/virtualbox/private_key
 }
 
 function up(){
   vagrant up worker | tee ./worker.log   
   vagrant up master | tee ./master.log
+  vagrant ssh-config
 }
 
 function suspend(){
@@ -21,7 +26,8 @@ function resume(){
 
 function help(){
   echo "Usage:
-    connect - login to master node
+    ssh_master - login to master node
+    ssh_worker
     help - Print help
     suspend - suspend vms
     resume - resume vms
@@ -37,11 +43,14 @@ function execute(){
   readonly command=${1:-''}
   shift
   case "$command" in
-    connect)
+    ssh_master)
+      $command "$@"
+      ;;
+    ssh_worker)
       $command "$@"
       ;;  
     up)
-      $command "$@" | tee ./master.out
+      $command "$@"
       ;;
     suspend)
       $command
@@ -51,7 +60,7 @@ function execute(){
       ;;
     help)
       $command
-      ;;    
+      ;;
     *)
       echo "Unrecognized command: '$command'"
       help
