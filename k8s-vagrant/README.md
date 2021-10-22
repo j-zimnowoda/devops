@@ -1,26 +1,32 @@
 # Kubernetes in Vagrant
-This environment describes virtual infrastructure for simple Kubernetes cluster: master and worker nodes.
+This environment describes virtual infrastructure for simple Kubernetes cluster of master and worker nodes.
 
-Two virtual machines interconnected via private network:
+Two virtual machines are interconnected via private network 192.168.56.0/24:
 
 |node|user|IP address|Network interface|Vagrant init script|
 |---|---|---|---|---|
-|master|student|192.168.56.101|eth1|master.sh|
-|worker|student|192.168.56.104|eth1|worker.sh|
+|master|vagrant|192.168.56.101|eth1|`master.sh`|
+|worker|vagrant|192.168.56.104|eth1|`worker.sh`|
 
-This environment is aimed **only** for experimental usage.
+This environment is aimed for non-production usage **only**.
 
-# Get started
+# Initialize
 Build kubernetes cluster (master and worked nodes) with:
 ```
 ./run.sh up
 ```
 Inspect Vagrant file for details about underlining virtual machine configuration
 
+# Join worker node to the cluster
+In `master.log` file find `kubeadm join` phrase. Copy whole command and execute it on worker node.
 
-Connect to master node by executing:
+# SSH to node
+SSH to master node:
 ```
-./run.sh connect
+./run.sh ssh_master
 ```
-The default password is `welcome1` and is subject to change
 
+SSH to worker node:
+```
+./run.sh ssh_worker
+```

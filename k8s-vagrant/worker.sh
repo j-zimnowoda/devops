@@ -25,12 +25,6 @@ echo "  Disable swap until next reboot"
 echo
 sudo swapoff -a
 
-# Make a student sudo user with password welcome1
-useradd student -m -p '$6$UhZjFYH1$9RiEbku8QFfIiKq0mf5spCHABaAK218nbH/c3ISzc63v5VRmM/2aUSRpsq3IAJ025.yXbOSJPCpr.VsgG.g3o.' -s /bin/bash
-mkdir -p /home/student/.ssh
-printf 'student ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/student
-chmod 440 /etc/sudoers.d/student
-
 echo "  Update the local node"
 sleep 2
 sudo apt-get update && sudo apt-get upgrade -y

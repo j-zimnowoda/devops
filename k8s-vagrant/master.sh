@@ -23,11 +23,7 @@ echo "Disable swap until next reboot"
 echo 
 sudo swapoff -a
 
-readonly user=student
-# Make user with password welcome1
-useradd $user -m -p '$6$UhZjFYH1$9RiEbku8QFfIiKq0mf5spCHABaAK218nbH/c3ISzc63v5VRmM/2aUSRpsq3IAJ025.yXbOSJPCpr.VsgG.g3o.' -s /bin/bash
-printf "$user ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/$user
-chmod 440 /etc/sudoers.d/$user
+readonly user=vagrant
 
 echo "Update the local node"
 sudo apt-get update && sudo apt-get upgrade -y
@@ -99,8 +95,6 @@ echo
 kubectl get node
 echo
 
-mkdir -p /home/$user/.ssh
-chown $user: /home/$user/.ssh
 mkdir -p /home/$user/.kube
 sudo cp -i /etc/kubernetes/admin.conf /home/$user/.kube/config
 sudo chown -R $user: /home/$user/.kube/config
