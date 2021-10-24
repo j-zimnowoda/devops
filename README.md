@@ -1,2 +1,2 @@
-# devops
-DevOps related scripts and notes
+# K8s
+Kubernetes deployments
